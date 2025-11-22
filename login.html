@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate Interactive Experience</title>
+    <title>Ultimate Interactive Experience - Consolidated</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* --- CORE BODY STYLING --- */
@@ -83,7 +83,6 @@
             z-index: 100;
             transform: rotate(3deg);
         }
-        
 
         .sticky-note-inner {
             position: relative;
@@ -128,20 +127,15 @@
             position: absolute;
             bottom: 5px;
             right: 5px;
-            width: 40px; 
+            width: 25px;
             height: 25px;
             cursor: pointer;
             padding: 0;
-            /* Removed white background */
-            border: 1px solid #ffcc33; /* Border color for definition */
-            background-color: #ffeb3b; /* SOLID YELLOW matching .sticky-note-front */
+            border: none;
+            background-color: rgba(255, 255, 255, 0.7);
             border-radius: 4px;
-            font-size: 10px; 
-            color: #333; 
-            font-weight: bold;
-            text-transform: uppercase;
-            line-height: 25px; 
-            text-align: center;
+            font-size: 14px;
+            line-height: 1;
             transition: background-color 0.2s;
         }
     </style>
@@ -209,7 +203,7 @@
         <div class="modal-content">
             <span class="close-btn">&times;</span>
             <h2>Welcome to Our Welcome Page!!👋</h2>
-            <p>Just need a few things. (Appears at 2s)</p>
+            <p>Just need a few things. </p>
         </div>
     </div>
 
@@ -217,7 +211,7 @@
         <div class="modal-content">
             <span class="close-btn">&times;</span>
             <h2>Just a username and password! 🔔</h2>
-            <p>It shouldn't be much. (Appears at 7s)</p>
+            <p>It shouldn't be much. </p>
         </div>
     </div>
 
@@ -225,13 +219,21 @@
         <div class="modal-content">
             <span class="close-btn">&times;</span>
             <h2>Final Call! 📢</h2>
-            <p>Click forget password if need help.😉 (Appears at 30s)</p>
+            <p>Click 'forget password' if need help.😉 </p>
+        </div>
+    </div>
+
+     <div id="modalQuestion" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Quick Question? 🪐</h2>
+            <p>What is the closest planet to the moon on Saturn? </p>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // --- 1. COMMON ELEMENTS & CONFIGURATION ---
+            // 1) Configuations & Elements
             const button = document.getElementById('chaseButton');
             const loginCard = document.getElementById('loginCard');
             const footerTrigger = document.getElementById("footerTrigger");
@@ -246,6 +248,7 @@
             const modalWelcome = document.getElementById("modalWelcome");
             const modalAction = document.getElementById("modalAction");
             const modalBase = document.getElementById("modalBase");
+            const modalQuestion = document.getElementById("modalQuestion");
 
             // Chasing Button Configuration
             const chaseRadius = 120;
@@ -253,7 +256,7 @@
 
             // --- 2. CHASING BUTTON & LOGIN LOGIC ---
             
-            // Mouse Movement Listener
+            // Mouse Movement Listener (Chasing effect)
             loginCard.addEventListener('mousemove', (e) => {
                 const buttonRect = button.getBoundingClientRect();
                 const buttonCenterX = buttonRect.left + buttonRect.width / 2;
@@ -293,9 +296,9 @@
                 const username = usernameInput.value.trim();
                 const password = passwordInput.value.trim();
                 
-                // Hardcoded Credentials from Sticky Note Back
-                const CORRECT_USERNAME = "**Johnnydoe67**";
-                const CORRECT_PASSWORD = "**qwerty**";
+                // Credentials from Sticky Note Back
+                const CORRECT_USERNAME = "Johnnydoe67";
+                const CORRECT_PASSWORD = "qwerty";
                 
                 if (username === CORRECT_USERNAME && password === CORRECT_PASSWORD) {
                     showMessage('You caught me! Successful login with the sticky note credentials!', 'success');
@@ -317,17 +320,17 @@
 
             // --- 5. TIMED POP-UP MODAL LOGIC ---
             
-            // Function to show a modal
             const showModal = (modalElement) => {
                 if (modalElement) {
                     modalElement.style.display = "block"; 
                 }
             };
 
-            // Schedule the pop-ups with custom delays
-            setTimeout(() => showModal(modalWelcome), 2000); 
-            setTimeout(() => showModal(modalAction), 7000); 
-            setTimeout(() => showModal(modalBase), 30000); 
+            // Schedule the 4 pop-ups with custom delays
+            setTimeout(() => showModal(modalWelcome), 2000); // 2 seconds
+            setTimeout(() => showModal(modalAction), 7000);  // 7 seconds
+            setTimeout(() => showModal(modalBase), 11000);   // 11 seconds
+            setTimeout(() => showModal(modalQuestion), 30000); // 30 seconds
 
             // --- 6. SHARED MODAL CLOSING LOGIC ---
             
