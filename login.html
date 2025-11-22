@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Complete Login Page</title>
-    <!-- Load Tailwind CSS from CDN -->
+    <title>Ultimate Interactive Experience</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* --- CORE BODY STYLING --- */
         body {
             font-family: 'Inter', sans-serif;
             display: flex;
@@ -15,18 +15,73 @@
             min-height: 100vh;
             margin: 0;
             padding: 1rem;
-            background: linear-gradient(135deg, #34d399, #10b981);
+            background: linear-gradient(135deg, #34d399, #10b981); 
         }
+
+        /* --- CHASING BUTTON CSS --- */
+        #chaseButton {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translate(-50%, 0); 
+            transition: transform 0.1s ease-out; 
+            z-index: 20; 
+            cursor: pointer; 
+        }
+
+        /* Ensure the login card is the reference point for the absolute button */
+        #loginCard {
+            position: relative;
+        }
+
+        /* --- MODAL CSS (For Timed Pop-ups) --- */
+        .modal {
+            display: none;
+            position: fixed; 
+            z-index: 9999; /* Highest z-index */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.7);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 30px;
+            border-radius: 8px;
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: #333;
+        }
+        
+        /* --- STICKY NOTE CSS (For 3D Flip) --- */
         .sticky-note {
             position: fixed;
             bottom: 20px;
             right: 20px;
             width: 150px;
-            height: 150px; /* Fixed height for consistent flip */
-            perspective: 1000px; /* CRITICAL: Adds the 3D depth to the container */
+            height: 150px;
+            perspective: 1000px; 
             z-index: 100;
-            transform: rotate(3deg); /* Slight rotation for a classic sticky note look */
-            /* Removed cursor: pointer from the container */
+            transform: rotate(3deg);
         }
 
         .sticky-note-inner {
@@ -34,11 +89,10 @@
             width: 100%;
             height: 100%;
             text-align: center;
-            transition: transform 0.6s; /* Animation speed */
-            transform-style: preserve-3d; /* CRITICAL: Allows child elements to be positioned in 3D space */
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
         }
 
-        /* Class added by JS to trigger the flip */
         .sticky-note-inner.is-flipped {
             transform: rotateY(180deg);
         }
@@ -47,7 +101,7 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            backface-visibility: hidden; /* CRITICAL: Hides the back side until it's flipped */
+            backface-visibility: hidden;
             border-radius: 4px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             padding: 15px 20px;
@@ -60,18 +114,15 @@
             align-items: center;
         }
 
-        /* Front side (Default view) */
         .sticky-note-front {
-            background-color: #ffeb3b; /* Yellow sticky note color */
+            background-color: #ffeb3b;
         }
 
-        /* Back side (The credentials) */
         .sticky-note-back {
-            background-color: #f7ff93; /* Slightly different yellow for distinction */
-            transform: rotateY(180deg); /* Start rotated 180deg */
+            background-color: #f7ff93;
+            transform: rotateY(180deg);
         }
 
-        /* Styles for the tiny corner button */
         .flip-button {
             position: absolute;
             bottom: 5px;
@@ -81,153 +132,215 @@
             cursor: pointer;
             padding: 0;
             border: none;
-            background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white */
+            background-color: rgba(255, 255, 255, 0.7);
             border-radius: 4px;
             font-size: 14px;
             line-height: 1;
             transition: background-color 0.2s;
         }
-
-        .flip-button:hover {
-            background-color: rgba(255, 255, 255, 0.9);
-        }
     </style>
 </head>
 <body>
-
-    <div class="w-full max-w-sm bg-white p-8 rounded-xl shadow-2xl">
+    
+    <div id="loginCard" class="w-full max-w-sm bg-white p-8 rounded-xl shadow-2xl">
         <h2 class="text-3xl font-extrabold text-center mb-6 text-gray-800">Log In</h2>
-
+        
         <form id="loginForm" class="space-y-6">
+            
             <div>
                 <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
-                <input
-                    type="text"
-                    id="username"
-                    name="username"
-                    required
+                <input type="text" id="username" name="username" required
                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500 transition duration-150 ease-in-out"
-                    placeholder="Enter your username"
-                >
+                    placeholder="Enter your username">
             </div>
 
-            <div>
+            <div class="mb-4">
                 <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    required
+                <input type="password" id="password" name="password" required
                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500 transition duration-150 ease-in-out"
-                    placeholder="••••••••"
-                >
+                    placeholder="••••••••">
             </div>
 
             <div id="messageBox" class="hidden p-3 text-sm rounded-lg" role="alert"></div>
 
-            <button
-                type="submit"
-                class="w-full py-2 px-4 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow-md transition duration-200 ease-in-out transform hover:scale-[1.01] focus:outline-none focus:ring-4 focus:ring-green-500 focus:ring-opacity-50"
-            >
+            <button type="button" id="chaseButton"
+                class="w-4/5 py-2 px-4 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow-lg transition duration-200 ease-in-out transform hover:scale-[1.05] focus:outline-none focus:ring-4 focus:ring-green-500 focus:ring-opacity-50">
                 Login
             </button>
         </form>
-
-        <!-- Footer trigger -->
-        <div id="footerTrigger" class="mt-6 text-center text-sm text-green-600 hover:text-green-800 hover:underline cursor-pointer">
+        
+        <div id="footerTrigger" class="mt-6 text-center text-sm text-green-600 hover:text-green-800 hover:underline cursor-pointer pt-8">
             Forgot Password? (Don't Click)
         </div>
 
-        <!-- Hidden popup footer message -->
         <div id="footerMessage" class="hidden mt-4 p-3 bg-green-100 text-green-800 rounded-lg text-center text-sm">
-            I told you not to click it. 🙄
+            I told you not to click it. 🙄 The button is chasing you, focus on that!
         </div>
     </div>
+    
     <div id="stickyNote" class="sticky-note">
         <div id="stickyNoteInner" class="sticky-note-inner">
             
-            <!-- FRONT FACE -->
             <div class="sticky-note-face sticky-note-front">
                 <p class="font-bold text-base">Shopping list</p>
                 <p class="text-xs mt-2">Tomatoes<br> Potatoes<br> Milk<br> Chocolates</p>
                 
-                <!-- NEW TINY BUTTON -->
                 <button id="flipButton" class="flip-button" title="Test credentials">
-                    &#8631; <!-- A simple circular arrow icon -->
+                    &#8631;
                 </button>
             </div>
             
-            <!-- BACK FACE (Hidden by default) -->
             <div class="sticky-note-face sticky-note-back">
                 <p class="font-bold text-base mb-1">Top Secret</p>
-                <p class="text-sm">User: Johnnydoe67</p>
-                <p class="text-sm">Pass: qwerty </p>
+                <p class="text-sm">User: **Johnnydoe67**</p>
+                <p class="text-sm">Pass: **qwerty** </p>
             </div>
             
         </div>
     </div>
+    
+    <div id="modalWelcome" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Welcome to Our Welcome Page!!👋</h2>
+            <p>Just need a few things. (Appears at 2s)</p>
+        </div>
+    </div>
+
+    <div id="modalAction" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Just a username and password! 🔔</h2>
+            <p>It shouldn't be much. (Appears at 7s)</p>
+        </div>
+    </div>
+
+    <div id="modalBase" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Final Call! 📢</h2>
+            <p>Click forget password if need help.😉 (Appears at 30s)</p>
+        </div>
+    </div>
 
     <script>
-        // Form Logic
-        const loginForm = document.getElementById('loginForm');
-        const messageBox = document.getElementById('messageBox');
-        const usernameInput = document.getElementById('username');
-        const passwordInput = document.getElementById('password');
-        
-        // Sticky Note Flip Logic (RESTORED)
-        const flipButton = document.getElementById('flipButton'); // 1. Get the button
-        const stickyNoteInner = document.getElementById('stickyNoteInner'); // 2. Get the inner container
-
-        // Attach event listener to the button
-        flipButton.addEventListener('click', (event) => {
-            event.stopPropagation(); // Prevents clicks from affecting elements underneath
-            stickyNoteInner.classList.toggle('is-flipped'); // 3. Toggle the flip class
-        });
-        
-        // Footer Toggle Logic
-        const footerTrigger = document.getElementById("footerTrigger");
-        const footerMessage = document.getElementById("footerMessage");
-        footerTrigger.addEventListener("click", () => {
-            footerMessage.classList.toggle("hidden");
-        });
-
-        // Function to show the message box with the appropriate style
-        function showMessage(message, type) {
-            messageBox.textContent = message;
-            messageBox.classList.remove('hidden', 'bg-red-100', 'text-red-700', 'bg-green-100', 'text-green-700');
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- 1. COMMON ELEMENTS & CONFIGURATION ---
+            const button = document.getElementById('chaseButton');
+            const loginCard = document.getElementById('loginCard');
+            const footerTrigger = document.getElementById("footerTrigger");
+            const footerMessage = document.getElementById("footerMessage");
+            const msgBox = document.getElementById('messageBox');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const flipButton = document.getElementById('flipButton');
+            const stickyNoteInner = document.getElementById('stickyNoteInner');
             
-            if (type === 'error') {
-                messageBox.classList.add('bg-red-100', 'text-red-700');
-            } else if (type === 'success') {
-                messageBox.classList.add('bg-green-100', 'text-green-700');
-            }
-        }
+            // Modal Elements
+            const modalWelcome = document.getElementById("modalWelcome");
+            const modalAction = document.getElementById("modalAction");
+            const modalBase = document.getElementById("modalBase");
 
-        // Add an event listener to the form to handle submission
-        loginForm.addEventListener('submit', function(event) {
-            event.preventDefault(); // Stop the page from reloading
+            // Chasing Button Configuration
+            const chaseRadius = 120;
+            const moveFactor = 0.8; 
 
-            messageBox.classList.add('hidden'); // Clear previous messages
-
-            const username = usernameInput.value.trim();
-            const password = passwordInput.value.trim();
-
-            // Test credentials
-            const CORRECT_USERNAME = "tester";
-            const CORRECT_PASSWORD = "password123";
-
-            if (username === CORRECT_USERNAME && password === CORRECT_PASSWORD) {
-                // Successful login (Credentials: tester / password123)
-                showMessage("Login successful! Welcome to the dashboard.", 'success');
+            // --- 2. CHASING BUTTON & LOGIN LOGIC ---
+            
+            // Mouse Movement Listener
+            loginCard.addEventListener('mousemove', (e) => {
+                const buttonRect = button.getBoundingClientRect();
+                const buttonCenterX = buttonRect.left + buttonRect.width / 2;
+                const buttonCenterY = buttonRect.top + buttonRect.height / 2;
                 
-            } else {
-                // Failed login
-                showMessage("Invalid username or password. Please check your credentials.", 'error');
+                const distX = e.clientX - buttonCenterX;
+                const distY = e.clientY - buttonCenterY;
+                const distance = Math.sqrt(distX * distX + distY * distY);
+
+                if (distance < chaseRadius) {
+                    const angle = Math.atan2(distY, distX);
+                    const pushMagnitude = (chaseRadius - distance) * moveFactor;
+                    const newOffsetX = -Math.cos(angle) * pushMagnitude;
+                    const newOffsetY = -Math.sin(angle) * pushMagnitude;
+                    
+                    button.style.transform = `translate(calc(-50% + ${newOffsetX}px), ${newOffsetY}px)`;
+                } else {
+                    button.style.transform = 'translate(-50%, 0)';
+                }
+            });
+            
+            // Message Helper Function
+            function showMessage(message, type) {
+                msgBox.textContent = message;
+                msgBox.classList.remove('hidden', 'bg-red-100', 'text-red-700', 'bg-green-100', 'text-green-700');
+                
+                if (type === 'error') {
+                    msgBox.classList.add('bg-red-100', 'text-red-700');
+                } else if (type === 'success') {
+                    msgBox.classList.add('bg-green-100', 'text-green-700');
+                }
+                msgBox.style.display = 'block';
             }
+
+            // Handle Login Click
+            button.addEventListener('click', () => {
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value.trim();
+                
+                // Hardcoded Credentials from Sticky Note Back
+                const CORRECT_USERNAME = "Johnnydoe67";
+                const CORRECT_PASSWORD = "qwerty";
+                
+                if (username === CORRECT_USERNAME && password === CORRECT_PASSWORD) {
+                    showMessage('You caught me! Successful login with the sticky note credentials!', 'success');
+                } else {
+                    showMessage('Invalid username or password. Try the sticky note!', 'error');
+                }
+            });
+            
+            // --- 3. FOOTER POP-UP TOGGLE LOGIC ---
+            footerTrigger.addEventListener("click", () => {
+                footerMessage.classList.toggle("hidden"); 
+            });
+            
+            // --- 4. STICKY NOTE FLIP LOGIC ---
+            flipButton.addEventListener('click', (event) => {
+                event.stopPropagation();
+                stickyNoteInner.classList.toggle('is-flipped');
+            });
+
+            // --- 5. TIMED POP-UP MODAL LOGIC ---
+            
+            // Function to show a modal
+            const showModal = (modalElement) => {
+                if (modalElement) {
+                    modalElement.style.display = "block"; 
+                }
+            };
+
+            // Schedule the pop-ups with custom delays
+            setTimeout(() => showModal(modalWelcome), 2000); 
+            setTimeout(() => showModal(modalAction), 7000); 
+            setTimeout(() => showModal(modalBase), 30000); 
+
+            // --- 6. SHARED MODAL CLOSING LOGIC ---
+            
+            const closeBtns = document.querySelectorAll('.close-btn');
+
+            // Closing via 'x' button
+            closeBtns.forEach(span => {
+                span.onclick = function() {
+                    this.closest('.modal').style.display = 'none';
+                };
+            });
+
+            // Closing via clicking the dark overlay
+            window.onclick = function(event) {
+                if (event.target.classList.contains('modal')) {
+                    event.target.style.display = 'none';
+                }
+            };
         });
     </script>
-    <!-- --- END OF JAVASCRIPT LOGIN LOGIC --- -->
 </body>
 </html>
-       
-
